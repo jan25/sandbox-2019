@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# This script is mostly about learnings bash
+# Following google style guide at [https://google.github.io/styleguide/shell.xml]
+
+err() {
+  echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
+}
+
+err "This is Error" "First one!"
+
