@@ -6,18 +6,20 @@ spec:
   selector:
     matchLabels:
       app: backend
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
         app: backend
-    spec:
+    spec: 
       containers:
       - name: flaskapp
-        image: flaskapp
-        # We are using manually built image that is on local box
-        # We did not push the image to dockerhub (YET!)
-        imagePullPolicy: IfNotPresent
+        image: areddy1/flaskapp:v1
+        env:
+        - name: APP_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
       - name: nginx
         image: nginx:alpine
         ports:
@@ -30,3 +32,15 @@ spec:
       - name: nginx-proxy-config
         configMap:
           name: nginx-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

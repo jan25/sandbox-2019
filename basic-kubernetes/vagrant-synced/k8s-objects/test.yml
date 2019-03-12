@@ -7,3 +7,5 @@ spec:
   - name: app
     image: areddy1/flaskapp:v1
     imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 5000
