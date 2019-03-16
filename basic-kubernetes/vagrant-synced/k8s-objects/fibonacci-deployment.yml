@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fibonacci-app
+spec:
+  selector:
+    matchLabels:
+      app: fibonacci
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          app: fibonacci
+      spec:
+        containers:
+        - name: fibonacciapp
+          image: areddy1/fibonacci:v1
+        - name: nginx
+          image: nginx:alpine
+          ports:
+          - containerPort: 80
+          volumeMounts:
+          - name: nginx-proxy-config
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+        volumes:
+        - name: nginx-proxy-config
+          configMap:
+            name: nginx-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fibonacci-service
+spec:
+  selector:
+    app: fibonacci
+  ports:
+  - protoocl: TCP
+    port: 80
+    targetPort: 80

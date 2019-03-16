@@ -14,7 +14,7 @@ spec:
     spec: 
       containers:
       - name: flaskapp
-        image: areddy1/flaskapp:v1
+        image: areddy1/flaskapp:v2
         env:
         - name: APP_POD_IP
           valueFrom:
