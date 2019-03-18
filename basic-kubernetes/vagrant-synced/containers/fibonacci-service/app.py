@@ -3,7 +3,7 @@ from fibonacci import api
 
 app = Flask(__name__)
 
-@app.route("/fibonacci")
+@app.route("/fibonacci", methods=['GET'])
 def fibonacci():
     try:
         n = int(request.args.get('n'))
@@ -11,7 +11,7 @@ def fibonacci():
     except Exception:
         return "ERROR: Invalid URL parameter. Example usage /fibonacci?n=13"
 
-@app.route("/health")
+@app.route("/health", methods=['GET'])
 def health():
     return "all ok!"
 
