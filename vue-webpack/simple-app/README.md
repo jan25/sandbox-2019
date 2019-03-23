@@ -1,4 +1,23 @@
-# simple-app
+# Build nginx static file container
+
+## Builds static files from vue files and spits them into public folder
+```
+./build.sh
+```
+
+## One off run docker container
+```
+docker run  -d -p 8080:80 simple-vue-app
+```
+- visit [localhost:8080](localhost:8080) to see index.html being served
+
+# simple-app [Vue app]
+
+- created using
+```
+vue create simple-app
+```
+- ^ This comes with whole build process within
 
 ## Project setup
 ```
