@@ -1,26 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-app
+  name: fibonacci-app
 spec:
   selector:
     matchLabels:
-      app: backend
-  replicas: 3
+      app: fibonacci
+  replicas: {{ .Values.fibonacci.replicaCount }}
   template:
     metadata:
       labels:
-        app: backend
-    spec: 
+        app: fibonacci
+    spec:
       containers:
-      - name: flaskapp
-        image: areddy1/flaskapp:v3
-        imagePullPolicy: Always
-        env:
-        - name: APP_POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+      - name: fibonacciapp
+        image: {{ .Values.fibonacci.containers.fibonacciImage }}
       - name: nginx
         image: nginx:alpine
         ports:
@@ -37,10 +31,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: fibonacci-service
 spec:
   selector:
-    app: backend
+    app: fibonacci
   ports:
   - protocol: TCP
     port: 80
