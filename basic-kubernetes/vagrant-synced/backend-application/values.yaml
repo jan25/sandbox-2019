@@ -3,11 +3,13 @@ backend:
   replicaCount: 2
   containers:
     flaskappImage: areddy1/flaskapp:v3
+  servicePrefix: backend-service
 
 fibonacci:
   replicaCount: 2
   containers:
     fibonacciImage: areddy1/fibonacci:v1
+  servicePrefix: fibonacci-service
 
 # # Default values for mychart.
 # # This is a YAML-formatted file.

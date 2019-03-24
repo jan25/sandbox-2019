@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-app
+  name: {{ .Release.Name }}-backend-app
 spec:
   selector:
     matchLabels:
@@ -21,6 +21,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
+        - name: FIBONACCI_SVC_NAME
+          value: {{ printf "%s-%s" .Release.Name .Values.fibonacci.servicePrefix }}
       - name: nginx
         image: nginx:alpine
         ports:
@@ -33,15 +35,3 @@ spec:
       - name: nginx-proxy-config
         configMap:
           name: nginx-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  selector:
-    app: backend
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
