@@ -23,21 +23,9 @@ spec:
               fieldPath: status.podIP
         - name: FIBONACCI_SVC_NAME
           value: {{ printf "%s-%s" .Release.Name .Values.fibonacci.servicePrefix }}
-      - name: nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: nginx-proxy-config
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
         livenessProbe:
           httpGet:
             path: /healthz
             port: 80
           initialDelaySeconds: 3
           periodSeconds: 5
-      volumes:
-      - name: nginx-proxy-config
-        configMap:
-          name: nginx-config

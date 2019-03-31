@@ -16,21 +16,9 @@ spec:
       - name: fibonacciapp
         image: {{ .Values.fibonacci.containers.fibonacciImage }}
         imagePullPolicy: Always
-      - name: nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: nginx-proxy-config
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
         livenessProbe:
           httpGet:
             path: /healthz
             port: 80
           initialDelaySeconds: 3
           periodSeconds: 5
-      volumes:
-      - name: nginx-proxy-config
-        configMap:
-          name: nginx-config

@@ -19,10 +19,6 @@ def getfibonacci():
     except Exception as e:
         return ("ERROR in request handler: %s" % str(e))
 
-@app.route("/health")
-def health():
-    return "all ok!"
-
 '''
 For liveness probe
 '''
@@ -30,5 +26,9 @@ For liveness probe
 def healthz():
     return "I'm healthy, thanks :)"
 
+'''
+For dev server
+In prod we use uwsgi server with uwsgi.ini
+'''
 if __name__ == "__main__":
     app.run("0.0.0.0", port=5000)
