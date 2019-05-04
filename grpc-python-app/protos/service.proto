@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message PasswordRequest {
+    string basePassword = 1;
+    int key = 2;
+}
+
+message GeneratedPassword {
+    string password = 1;
+}
+
+service PasswordGenerator {
+    rpc GeneratePassword(PasswordRequest) returns (GeneratedPassword) {}
+}
