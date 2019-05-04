@@ -2,7 +2,7 @@ syntax = "proto3";
 
 message PasswordRequest {
     string basePassword = 1;
-    int key = 2;
+    int32 encryptionKey = 2;
 }
 
 message GeneratedPassword {
