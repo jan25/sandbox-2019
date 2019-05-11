@@ -103,7 +103,7 @@ export default {
         }
     },
     watch: {
-        keyDownEvent: function(direction, _) {
+        keyDownEvent: function(direction) {
             this.onKeyDown(...direction);
         }
     },
