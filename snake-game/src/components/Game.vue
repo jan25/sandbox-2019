@@ -1,12 +1,37 @@
 <template>
     <div id="game-area">
+        <div id="difficulty-slider">
+            <div>
+                <span>Difficulty</span>
+            </div>
+            <vue-slider
+                v-model="difficulty.level"
+                :min="1"
+                :max="5"
+                :interval="1"
+                :adsorb="true"
+                @change="changeDifficulty"
+                width="200px"
+            >
+            </vue-slider>
+        </div>
         <canvas id="game-canvas" ref="canvas" width="200" height="200"></canvas>
-        <span>Length: {{ this.length }}</span>
+        <div>
+            <span>Current score: {{ score.currentScore }}</span>
+            <br />
+            <span>Best: {{ score.maxScore }}</span>
+        </div>
     </div>
 </template>
 <script>
+import VueSlider from 'vue-slider-component';
+import 'vue-slider-component/theme/default.css';
+import { setInterval } from 'timers';
 
 export default {
+    components: {
+        VueSlider
+    },
     data: function() {
         return {
             size: 20,
@@ -15,13 +40,21 @@ export default {
             velocity: 1,
             direction: this.keyDownEvent,
             canvasContext: null,
+            ticker: null,
             cellSize: 10,
-            frameRate: 100, // ms
+            frameRate: 150, // ms [1000, 50]
             egg: {
                 position: [0, 0],
                 radius: 3,
-                status: 0, // 0 is available, 1 is eaten
             },
+            difficulty: {
+                level: 3, // 1 to 10
+                frameRates: [250, 200, 150, 100, 50],
+            },
+            score: {
+                currentScore: 0,
+                maxScore: 0,
+            }
         };
     },
     props: [
@@ -46,16 +79,39 @@ export default {
         },
         updateTrail() {
             let nextMove = this.getNextMove();
+            this.checkAndChopTail(nextMove);
             this.trail.push(nextMove);
 
             if (nextMove[0] == this.egg.position[0] && nextMove[1] == this.egg.position[1]) {
                 this.generateNewEgg();
                 this.length += 1;
+                this.updateCurrentScore();
             } else {
                 this.trail.shift();
             }
 
             this.render();
+        },
+        updateCurrentScore() {
+            this.score.currentScore = this.length;
+        },
+        updateMaxScore() {
+            this.score.maxScore = Math.max(this.score.maxScore, this.score.currentScore);
+        },
+        checkAndChopTail(nextMove) {
+            let foundIdx = -1;
+            for (let i = 0; i < this.length; ++i) {
+                if (nextMove[0] == this.trail[i][0] && nextMove[1] == this.trail[i][1]) {
+                    foundIdx = i;
+                }
+            }
+            if (foundIdx != -1) {
+                this.trail = this.trail.splice(foundIdx + 1);
+                this.length = this.trail.length;
+
+                this.updateMaxScore();
+                this.updateCurrentScore();
+            }
         },
         onKeyDown(dx, dy) {
             if (this.direction[0] + dx != 0 && this.direction[1] + dy != 0) {
@@ -88,7 +144,7 @@ export default {
             this.canvasContext.fillStyle = 'black';
             this.canvasContext.fillRect(
                 x + 1, y + 1,
-                this.cellSize - 1, this.cellSize - 1      
+                this.cellSize - 1, this.cellSize - 1
             );
         },
         renderEgg() {
@@ -98,9 +154,14 @@ export default {
             this.canvasContext.beginPath();
             this.canvasContext.arc(cx, cy, this.egg.radius, 0, 2 * Math.PI);
             this.canvasContext.stroke();
-            this.canvasContext.fillStyle="red";
+            this.canvasContext.fillStyle = "green";
             this.canvasContext.fill()
-        }
+        },
+        changeDifficulty() {
+            this.frameRate = this.difficulty.frameRates[this.difficulty.level - 1];
+            this.ticker.close();
+            this.ticker = setInterval(this.nextFrame, this.frameRate);
+        },
     },
     watch: {
         keyDownEvent: function(direction) {
@@ -109,15 +170,27 @@ export default {
     },
     mounted: function() {
         this.initializeGame();
-        setInterval(this.nextFrame, this.frameRate);
+        this.ticker = setInterval(this.nextFrame, this.frameRate);
     },
 }
 </script>
 
 <style scoped>
+#game-area {
+    width: 250;
+}
+
 #game-canvas {
     display: inline-block;
     padding: 0 0 0 0;
     border: 1px solid black;
+}
+
+#difficulty-slider {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px;
 }
 </style>
