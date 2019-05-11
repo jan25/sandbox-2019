@@ -1,0 +1,93 @@
+<html>
+  <head>
+    <title>Vue 101</title>
+  </head>
+  <body>
+    <div id="app">
+        <div id="game-area">
+            <canvas id="canvas" width="500" height="500"></canvas>
+            <GlobalEvents
+                @keydown.up="onKeyDown(0, -1)"
+                @keydown.right="onKeyDown(1, 0)"
+                @keydown.down="onKeyDown(0, 1)"
+                @keydown.left="onKeyDown(-1, 0)">
+            </GlobalEvents>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+        });
+
+        const game = new Vue({
+            el: '#game-area',
+            data: {
+                size: 50,
+                length: 5,
+                trail: [],
+                velocity: 1,
+                direction: [1, 0],
+                canvasContext: null,
+                cellSize: 10,
+                frameRate: 100, // ms
+            },
+            methods: {
+                initializeGame() {
+                    this.canvasContext = this.$el.querySelector('#canvas')
+                                                            .getContext('2d');
+
+                    for (let i = 0; i < this.length; ++i) {
+                        this.trail.push([0, i]);
+                    }
+                    this.render();
+                },
+                render() {
+                    this.canvasContext.fillStyle = 'white';
+                    this.canvasContext.fillRect(
+                        0, 0,
+                        this.size * this.cellSize, this.size * this.cellSize
+                    );
+
+                    for (let i = 0; i < this.length; ++i) {
+                        const cellTopLeft = this.trail[i];
+                        this.renderCell(this.cellSize * cellTopLeft[0], this.cellSize * cellTopLeft[1]);
+                    }
+                },
+                renderCell(x, y) {
+                    this.canvasContext.fillStyle = 'black';
+                    this.canvasContext.fillRect(
+                        x + 1, y + 1,
+                        this.cellSize - 1, this.cellSize - 1      
+                    );
+                },
+                getNextMove() {
+                    let x = this.trail[this.length - 1][0], y = this.trail[this.length - 1][1];
+                    x += this.velocity * this.direction[0] + this.size;
+                    y += this.velocity * this.direction[1] + this.size;
+                    return [x % this.size, y % this.size];
+                },
+                updateTrail() {
+                    this.trail.push(this.getNextMove());
+                    this.trail.shift();
+                    this.render();
+                },
+                onKeyDown(dx, dy) {
+                    // TODO
+                    if (this.direction[0] + dx != 0 && this.direction[1] + dy != 0) {
+                        this.direction = [dx, dy];
+                    }
+                },
+                nextFrame() {
+                    // TODO
+                    this.updateTrail();
+                }
+            },
+            mounted: function() {
+                this.initializeGame();
+                setInterval(this.nextFrame, this.frameRate);
+            },
+        });
+    </script>
+  </body>
+</html>
