@@ -53,9 +53,10 @@
   <script>
 
 function formatDuration(duration) {
-  var d = duration / (1000000 * 1000 * 60);
+  // var d = duration / (1000000 * 1000 * 60);
   var units = 'min';
-  return Math.round(d) + units;
+  // return Math.round(duration) + units;
+  return duration + units;
 }
 
 var clientUUID = Math.round(Math.random() * 10000);
