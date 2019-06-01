@@ -7,6 +7,7 @@ class Route:
         self.dropoff = dropoff
         self.eta = eta
 
-def compute_route(driver, customer):
-    uri = 'localhost:%d/compute_route' % config.ROUTE_PORT
+def compute_route(pickup, dropoff):
+    uri = ('http://localhost:%d/route?pickup=%s&dropoff=%s'
+                    % (config.ROUTE_PORT, pickup, dropoff) )
     return requests.get(uri)
