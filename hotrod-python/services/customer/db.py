@@ -8,7 +8,5 @@ customers = {
 }
 
 def get_customer_by_id(customer_id):
-    if customer_id not in customers:
-        # TODO add logs here
-        return
+    if customer_id not in customers: return
     return customers[customer_id]

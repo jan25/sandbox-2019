@@ -1,12 +1,13 @@
 import json
 import importlib
 
-def obj_to_json_str(o):
-    return json.dumps(o, default=obj_to_dict)
+def obj_to_json(o):
+    # return json.dumps(o, default=obj_to_dict)
+    return obj_to_dict(o)
 
-def json_str_to_obj(j):
-    _dict = json.loads(j)
-    return dict_to_obj(_dict)
+def json_to_obj(j):
+    # _dict = json.loads(j)
+    return dict_to_obj(j)
 
 def obj_to_dict(o):
     #  Populate the dictionary with object meta data 
