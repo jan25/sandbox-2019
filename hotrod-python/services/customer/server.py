@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-import db
-import config.settings as config
+from . import db
+import services.config.settings as config
 
 app = Flask(__name__)
 
@@ -10,5 +10,7 @@ def get_customer():
     customer_obj = db.get_customer_by_id(customer_id)
     return jsonify(customer_obj)
 
-if __name__ == '__main__':
+def start_server():
     app.run(host='0.0.0.0', port=config.CUSTOMER_PORT, debug=True)
+
+if __name__ == '__main__': start_server()

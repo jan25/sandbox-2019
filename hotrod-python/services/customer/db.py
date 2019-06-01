@@ -1,25 +1,10 @@
+from .client import Customer
 
 customers = {
-    "123": {
-        'ID':       "123",
-        'Name':     "Rachel's Floral Designs",
-        'Location': "115,277",
-    },
-    "567": {
-        'ID':       "567",
-        'Name':     "Amazing Coffee Roasters",
-        'Location': "211,653",
-    },
-    "392": {
-        'ID':       "392",
-        'Name':     "Trom Chocolatier",
-        'Location': "577,322",
-    },
-    "731": {
-        'ID':       "731",
-        'Name':     "Japanese Deserts",
-        'Location': "728,326",
-    },
+    "123": Customer(id="123", name="Rachel's Floral Designs", location="115,277"),
+    "567": Customer(id="567", name="Amazing Coffee Roasters", location="211,653"),
+    "392": Customer(id="392", name="Trom Chocolatier", location="577,322"),
+    "731": Customer(id="731", name="Japanese Deserts", location="728,326")
 }
 
 def get_customer_by_id(customer_id):

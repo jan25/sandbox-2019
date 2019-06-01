@@ -1,10 +1,10 @@
 import os
 from flask import Flask, send_from_directory, request
 
-import config.settings as config
-import customer.client as customer_client
-import driver.client as driver_client
-import route.client as route_client
+import services.config.settings as config
+import services.customer.client as customer_client
+import services.driver.client as driver_client
+import services.route.client as route_client
 
 # import opentracing
 # from flask_opentracing import FlaskTracing
@@ -39,11 +39,13 @@ def handle_dispatch(request):
 
     best_route, best_driver = -1, None
     for driver in drivers:
-        route = route_client.find_route(driver, customer)
+        route = route_client.compute_route(driver, customer)
         if best_route == -1 or route < best_route:
             best_driver = driver
     
     return best_driver
 
-if __name__ == "__main__":
+def start_server():
     app.run(host='0.0.0.0', port=config.FRONTEND_PORT, debug=True)
+
+if __name__ == "__main__": start_server()
