@@ -22,6 +22,6 @@ def compute_route(pickup, dropoff):
     return client.Route(pickup=pickup, dropoff=dropoff, eta=eta)
 
 def start_server(debug):
-    app.run(host='0.0.0.0', port=config.DRIVER_PORT, debug=debug)
+    app.run(host='0.0.0.0', port=config.ROUTE_PORT, debug=debug)
 
 if __name__ == '__main__': start_server(debug=True)
