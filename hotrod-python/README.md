@@ -27,7 +27,7 @@ $ sh run.sh driver
 - add driver file to kick start all services from one place [Upd: temporarily docker-compose solves this]
 - add logging to each service
 - instrument services and push traces to jaeger
-- Update `requirements.txt`
+- Fix unset proxy stuff from docker-compose.yml
 
 >
 > **Credits** Blog post on HotR.O.D application https://medium.com/opentracing/take-opentracing-for-a-hotrod-ride-f6e3141f7941

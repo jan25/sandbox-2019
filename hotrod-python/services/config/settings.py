@@ -2,6 +2,8 @@ import os
 
 USE_DOCKER_COMPOSE = 'USE_DOCKER_COMPOSE' in os.environ
 
+JAEGER_HOST = 'jaeger-all-in-one' if USE_DOCKER_COMPOSE else 'localhost'
+
 FRONTEND_PORT = 80 if USE_DOCKER_COMPOSE else 8080
 FRONTEND_HOST = 'frontend' if USE_DOCKER_COMPOSE else 'localhost:8080'
 
