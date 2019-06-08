@@ -4,10 +4,14 @@
 
 - Setup virtual env
 ```
-$ venv .venv
+$ virtualenv .venv
 $ source .venv/bin/activate
 ```
-- Start up services
+- Start up services using docker-compose.yml
+```
+$ docker-compose up
+```
+- OR Start up services locally
 ```
 $ sh run.sh frontend
 $ sh run.sh customer
@@ -20,7 +24,7 @@ $ sh run.sh driver
 - setup services and connect them
 
 ### Todo
-- add driver file to kick start all services from one place
+- add driver file to kick start all services from one place [Upd: temporarily docker-compose solves this]
 - add logging to each service
 - instrument services and push traces to jaeger
 - Update `requirements.txt`
