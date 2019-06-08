@@ -8,7 +8,7 @@ class Driver:
         self.location = location
 
 def get_drivers(pickup):
-    uri = 'http://localhost:%d/find_nearest?pickup=%s' % (config.DRIVER_PORT, pickup)
+    uri = 'http://%s/find_nearest?pickup=%s' % (config.DRIVER_HOST, pickup)
     response = requests.get(uri)
     try:
         drivers = response.json()

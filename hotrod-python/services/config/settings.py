@@ -1,5 +1,9 @@
+import os
 
-FRONTEND_PORT = 8080
+USE_DOCKER_COMPOSE = 'USE_DOCKER_COMPOSE' in os.environ
+
+FRONTEND_PORT = 80 if USE_DOCKER_COMPOSE else 8080
+FRONTEND_HOST = 'frontend' if USE_DOCKER_COMPOSE else 'localhost:8080'
 
 # RouteWorkerPoolSize is the size of the worker pool used to query `route` service.
 # Can be overwritten from command line.
@@ -8,7 +12,8 @@ route_worker_pool_size = 3
 
 # 'customer' service
 
-CUSTOMER_PORT = 8081
+CUSTOMER_PORT = 80 if USE_DOCKER_COMPOSE else 8081
+CUSTOMER_HOST = 'customer' if USE_DOCKER_COMPOSE else 'localhost:8081'
 
 # MySQLGetDelay is how long retrieving a customer record takes.
 # Using large value mostly because I cannot click the button fast enough to cause a queue.
@@ -26,7 +31,8 @@ mysql_mutex_disabled = False
 
 # 'driver' service
 
-DRIVER_PORT = 8082
+DRIVER_PORT = 80 if USE_DOCKER_COMPOSE else 8082
+DRIVER_HOST = 'driver' if USE_DOCKER_COMPOSE else 'localhost:8082'
 
 # RedisFindDelay is how long finding closest drivers takes.
 # RedisFindDelay = 20 * time.Millisecond
@@ -46,7 +52,8 @@ redis_get_delay_std_dev = redis_get_delay // 4
 
 # 'route' service
 
-ROUTE_PORT = 8083
+ROUTE_PORT = 80 if USE_DOCKER_COMPOSE else 8083
+ROUTE_HOST = 'route' if USE_DOCKER_COMPOSE else 'localhost:8083'
 
 # RouteCalcDelay is how long a route calculation takes
 # RouteCalcDelay = 50 * time.Millisecond

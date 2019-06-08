@@ -23,7 +23,7 @@ $ sh run.sh driver
 - add driver file to kick start all services from one place
 - add logging to each service
 - instrument services and push traces to jaeger
-- Update `dependencies.txt`
+- Update `requirements.txt`
 
 >
 > **Credits** Blog post on HotR.O.D application https://medium.com/opentracing/take-opentracing-for-a-hotrod-ride-f6e3141f7941

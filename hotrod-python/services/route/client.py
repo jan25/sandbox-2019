@@ -9,8 +9,7 @@ class Route:
         self.eta = eta
 
 def compute_route(pickup, dropoff):
-    uri = ('http://localhost:%d/route?pickup=%s&dropoff=%s'
-                    % (config.ROUTE_PORT, pickup, dropoff) )
+    uri = ('http://%s/route?pickup=%s&dropoff=%s' % (config.ROUTE_HOST, pickup, dropoff) )
 
     try:
         response = requests.get(uri)

@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  frontend:
+    image: 'python:3'
+    volumes:
+      - '.:/app/src'
+    command:
+      - /bin/bash
+      - -c
+      - |
+        unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy
+        cd /app/src
+        pip install -r requirements.txt
+        python -m services.frontend.server
+    ports:
+      - "8080:80"
+    environment:
+      - USE_DOCKER_COMPOSE=1
+  customer:
+    image: 'python:3'
+    volumes:
+      - '.:/app/src'
+    command:
+      - /bin/bash
+      - -c
+      - |
+        unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy
+        cd /app/src
+        pip install -r requirements.txt
+        python -m services.customer.server
+    ports:
+      - "8081:80"
+    environment:
+      - USE_DOCKER_COMPOSE=1
+  driver:
+    image: 'python:3'
+    volumes:
+      - '.:/app/src'
+    command:
+      - /bin/bash
+      - -c
+      - |
+        unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy
+        cd /app/src
+        pip install -r requirements.txt
+        python -m services.driver.server
+    ports:
+      - "8082:80"
+    environment:
+      - USE_DOCKER_COMPOSE=1
+  route:
+    image: 'python:3'
+    volumes:
+      - '.:/app/src'
+    command:
+      - /bin/bash
+      - -c
+      - |
+        unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy
+        cd /app/src
+        pip install -r requirements.txt
+        python -m services.route.server
+    ports:
+      - "8083:80"
+    environment:
+      - USE_DOCKER_COMPOSE=1
