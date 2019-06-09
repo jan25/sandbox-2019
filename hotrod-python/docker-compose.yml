@@ -24,7 +24,8 @@ services:
         unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy
         cd /app/src
         pip install -r requirements.txt
-        python -m services.frontend.server
+        uwsgi --ini services/frontend/uwsgi.ini
+        # python -m services.frontend.server
     ports:
       - "8080:80"
     environment:

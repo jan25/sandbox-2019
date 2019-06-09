@@ -1,36 +1,43 @@
 import os
+import logging
+import sys
 from flask import Flask, send_from_directory, request, jsonify
+
+import opentracing
+from uwsgidecorators import postfork
 
 import services.common.serializer as serializer
 import services.config.settings as config
 from . import eta
 
-import opentracing
-# from flask_opentracing import FlaskTracing
-from jaeger_client import Config
+import services.common.middleware as middleware
 
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'web_assets')
+
 app = Flask(__name__)
 
-JAEGER_HOST = config.JAEGER_HOST
+@postfork
+def postfork():
+    print ('postforking..')
+    app.wsgi_app = middleware.FlaskMiddleware(service_name='frontend', app=app.wsgi_app)
 
-j_config = Config(config={'sampler': {'type': 'const', 'param': 1},
-                        'logging': True,
-                        'local_agent': {'reporting_host': JAEGER_HOST}
-                        },
-                service_name="frontend")
-jaeger_tracer = j_config.initialize_tracer()
-# tracing = FlaskTracing(jaeger_tracer, True, app)
+def _log(this):
+    print(this)
+    sys.stdout.flush()
 
 @app.route("/")
 def index():
-    with jaeger_tracer.start_span('index') as span:
+    with opentracing.global_tracer().start_span('index') as span:
         return send_from_directory(static_file_dir, 'index.html')
 
 @app.route('/dispatch')
 def dispatch():
-    with jaeger_tracer.start_span('dispatch') as span:
-        return jsonify(handle_dispatch(request))
+    with opentracing.global_tracer().start_span('dispatch') as span:
+        _log('/dispatch called')
+        return middleware.RequestMiddleware.handle_request(request, handle_dispatch_and_jsonify)
+
+def handle_dispatch_and_jsonify(request):
+    return jsonify(handle_dispatch(request))
 
 def handle_dispatch(request):
     customer_id = request.args.get('customer')
