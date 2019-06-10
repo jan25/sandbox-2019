@@ -1,9 +1,24 @@
 from flask import Flask, request, jsonify
-from . import db
+from uwsgidecorators import postfork
+
+import services.common.middleware as middleware
 import services.config.settings as config
 import services.common.serializer as serializer
+from . import db
 
 app = Flask(__name__)
+
+@postfork
+def postfork():
+    print (middleware.init_tracer('customer'))
+
+@app.before_request
+def before_request():
+    return middleware.before_request(request)
+
+@app.after_request
+def after_request(response):
+    return middleware.after_request(response)
 
 @app.route('/customer')
 def get_customer():

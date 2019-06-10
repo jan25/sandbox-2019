@@ -1,16 +1,11 @@
 import os
-import logging
-import sys
 from flask import Flask, send_from_directory, request, jsonify
-
-import opentracing
 from uwsgidecorators import postfork
 
+import services.common.middleware as middleware
 import services.common.serializer as serializer
 import services.config.settings as config
 from . import eta
-
-import services.common.middleware as middleware
 
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'web_assets')
 
@@ -18,25 +13,22 @@ app = Flask(__name__)
 
 @postfork
 def postfork():
-    print ('postforking..')
-    app.wsgi_app = middleware.FlaskMiddleware(service_name='frontend', app=app.wsgi_app)
+    middleware.init_tracer('frontend')
 
-def _log(this):
-    print(this)
-    sys.stdout.flush()
+@app.before_request
+def before_request():
+    return middleware.before_request(request)
+
+@app.after_request
+def after_request(response):
+    return middleware.after_request(response)
 
 @app.route("/")
 def index():
-    with opentracing.global_tracer().start_span('index') as span:
-        return send_from_directory(static_file_dir, 'index.html')
+    return send_from_directory(static_file_dir, 'index.html')
 
 @app.route('/dispatch')
 def dispatch():
-    with opentracing.global_tracer().start_span('dispatch') as span:
-        _log('/dispatch called')
-        return middleware.RequestMiddleware.handle_request(request, handle_dispatch_and_jsonify)
-
-def handle_dispatch_and_jsonify(request):
     return jsonify(handle_dispatch(request))
 
 def handle_dispatch(request):
