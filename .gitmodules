@@ -1,0 +1,4 @@
+[submodule "hotrod-python"]
+	path = hotrod-python
+	url = https://github.com/jan25/hotrod-python
+	branch = master
