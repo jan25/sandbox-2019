@@ -9,7 +9,7 @@ const debounce = function(fn, waitFor = 100) {
         }
         timerId = setTimeout(() => {
             timerId = null;
-            fn(...args);
+            fn(...lastArgs);
         }, waitFor);
     };
 };
