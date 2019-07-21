@@ -1,13 +1,15 @@
 
 const throttle = function(fn, waitFor = 100) {
     let timerId = null;
+    let lastArgs = [];
     return (...args) => {
+        lastArgs = args;
         if (timerId) {
             return;
         }
         timerId = setTimeout(() => {
             timerId = null;
-            fn(...args);
+            fn(...lastArgs);
         }, waitFor);
     };
 }

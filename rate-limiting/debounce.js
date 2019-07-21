@@ -1,7 +1,9 @@
 
 const debounce = function(fn, waitFor = 100) {
     let timerId = null;
+    let lastArgs = [];
     return (...args) => {
+        lastArgs = args;
         if (timerId) {
             clearTimeout(timerId);
         }
