@@ -1,4 +1,9 @@
-
+/**
+ * Throttling allows execution of last requested in a given time period
+ * All previous requests in this time period are dropped
+ * 
+ * Exercise for reader: Can you think of a usecase for this?
+ */
 const throttle = function(fn, waitFor = 100) {
     let timerId = null;
     let lastArgs = [];
