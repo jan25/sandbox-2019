@@ -11,10 +11,26 @@ Welcome to pypacks's documentation!
    :caption: Contents:
 
 
+This is Shapes Package
+========================
 
-Indices and tables
-==================
+1. Shape Interface
+*******************
+.. automodule:: shapes.shape
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. autoclass:: shapes.shape.Shape
+    :members: perimeter, area, name
+
+2. Triangle Shape
+*******************
+.. automodule:: shapes.triangle
+
+.. autoclass:: shapes.triangle.Triangle
+    :members: is_equivalent, is_right_triangle
+
+3. Rectangle Shape
+*******************
+.. automodule:: shapes.rectangle
+
+.. autoclass:: shapes.rectangle.Rectangle
+    :members: is_square

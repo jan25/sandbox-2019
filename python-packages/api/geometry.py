@@ -17,7 +17,7 @@ class GeometricShape:
     
     def name(self):
         self._assert_shape()
-        return str(type(self.shape))
+        return self.shape.name()
 
     def perimeter(self):
         self._assert_shape()
