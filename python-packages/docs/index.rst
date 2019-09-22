@@ -7,20 +7,3 @@ Welcome to pypacks's documentation!
 ===================================
 
 This is Shapes Package
-========================
-
-Shape Interface
-*******************
-.. automodule:: shapes.shape
-
-.. autoclass:: shapes.shape.Shape
-    :members: perimeter, area, name
-
-Implementations
-****************
-
-.. toctree::
-   :maxdepth: 2
-   
-   triangle.rst
-   rectangle.rst
